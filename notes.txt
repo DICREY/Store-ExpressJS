@@ -1,5 +1,6 @@
 #bibliotecas y modulos
-npm i nodemon eslint eslint-config-prettier eslint-plugin-prettier pritter -D
+npm i eslint eslint-config-prettier eslint-plugin-prettier pritter -D
+npm i nodemon
 npm i express
 npm i path
 npm i @faker-js/faker

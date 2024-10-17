@@ -7,7 +7,8 @@ class UserService {
   }
 
   generate () {
-    for (let i = 0;i < 10; i++) {
+    let limit = 10
+    for (let i = 0;i < limit; i++) {
       this.users.push({
         id: faker.string.uuid(),
         name: faker.internet.userName(),
@@ -28,10 +29,14 @@ class UserService {
   }
 
   create(data) {
-    this.users.push(data)
+    const newUser = {
+      id: faker.string.uuid(),
+      ...data
+    }
+    this.users.push(newUser)
     return {
       message: "created",
-      data: data
+      data: newUser
     }
   }
 
@@ -41,7 +46,7 @@ class UserService {
   }
 
   delete(id) {
-    const user = this.users.find( i => i.id === data || i.email === data || i.name === data)
+    const user = this.users.delete( i => i.id === data || i.email === data || i.name === data)
   }
 }
 

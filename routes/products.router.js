@@ -5,7 +5,7 @@ const router = express.Router()
 const service = new ProductsService()
 
 router.get('/',(req,res) => {
-  let products = service.find()
+  const products = service.find()
   res.json(products)
 })
 
@@ -14,17 +14,15 @@ router.get('/filter',(req,res) => {
 })
 
 router.get('/:id',(req,res) => {
-  const {id} = req.params
-  let products = service.findOne(id)
+  const { id } = req.params
+  const products = service.findOne(id)
   res.status(200).json(products)
 })
 
 router.post('/',(req,res) => {
-  const body = req.body
-  res.status(201).json({
-    message: "created",
-    data: body
-  })
+  const data = req.body
+  const product = service.create(data)
+  res.status(201).json(product)
 })
 
 router.patch('/:id',(req,res) => {
