@@ -7,7 +7,7 @@ class UserService {
   }
 
   generate () {
-    let limit = 10
+    const limit = 10
     for (let i = 0;i < limit; i++) {
       this.users.push({
         id: faker.string.uuid(),
@@ -20,33 +20,66 @@ class UserService {
     }
   }
 
-  find() {
-    return this.users
+  async find() {
+    return new Promise((res,rej) => {
+      setTimeout(() => {
+        res(this.users)
+      },5000)
+    })
   }
 
-  findOne(data) {
-    return this.users.find( i => i.id === data || i.email === data || i.name === data)
+  async findOne(data) {
+    return new Promise((res,rej) => {
+      setTimeout(() => {
+        res(this.users.find( i => i.id === data || i.email === data || i.name === data))
+      },5000)
+    })
   }
 
-  create(data) {
-    const newUser = {
-      id: faker.string.uuid(),
-      ...data
-    }
-    this.users.push(newUser)
-    return {
-      message: "created",
-      data: newUser
-    }
+  async create(data) {
+    return new Promise((res,rej) => {
+      const newUser = {
+        id: faker.string.uuid(),
+        ...data
+      }
+      this.users.push(newUser)
+      
+      setTimeout(() => {
+        res({
+          message: "created",
+          data: newUser
+        })
+      },5000)
+    })
   }
 
-  update(data,body) {
-    const user = this.users.find( i => i.id === data || i.email === data || i.name === data)
-    return user
+  async update(data,body) {
+    return new Promise((res,rej) => {
+      const index = this.users.findIndex( i => i.id === data || i.email === data || i.name === data)
+      if (index === -1) throw new Error("User not found")
+      let user = this.users[index]
+      this.users[index] = {
+        ...user,
+        ...body
+      }
+
+      setTimeout(() => {
+        res(this.users[index])
+      },5000)
+    })
+
   }
 
-  delete(id) {
-    const user = this.users.delete( i => i.id === data || i.email === data || i.name === data)
+  async deleteOne(id) {
+    return new Promise((res,rej) => {
+      const index = this.users.findIndex( i => i.id === data || i.email === data || i.name === data)
+      if (index === -1) throw new Error("User not found")
+      this.users.splice(index,1)
+
+      setTimeout(() => {
+        res({ id })
+      },5000)
+    })  
   }
 }
 

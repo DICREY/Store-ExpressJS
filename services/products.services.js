@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker')
+const { faker, da } = require('@faker-js/faker')
 
 class ProductsService {
   constructor () {
@@ -6,7 +6,7 @@ class ProductsService {
     this.generate()
   }
 
-  generate () {
+  generate() {
     const limit = 10
     for (let i = 0;i < limit; i++) {
       this.products.push({
@@ -18,29 +18,65 @@ class ProductsService {
     }
   }
 
-  find() {
-    return this.products
+  async find() {
+    return new Promise((res,rej) => {
+      setTimeout(() => {
+        res(this.products)
+      },5000)
+    })
   }
 
-  findOne (id) {
-    return this.products.find( item => item.id === id)
+  async findOne(data) {
+    const name = this.getTotal()
+    return new Promise((res,rej) => {
+      setTimeout(() => {
+        res(this.products.find( i => i.id === data || i.name === data))
+      },5000)
+    })
   }
 
-  create(data) {
-    const newProduct = {
-      id: faker.string.uuid(),
-      ...data
-    }
-    this.products.push(newProduct)
-    return newProduct
+  async create(data) {
+    return new Promise((res,rej) => {
+      const newProduct = {
+        id: faker.string.uuid(),
+        ...data
+      }
+      this.products.push(newProduct)
+      setTimeout(() => {
+        res({
+            message: "created",
+            data: newProduct
+        })
+      },5000)
+    })
   }
 
-  update() {
+  async update(id,data) {
+    return new Promise((res,rej) => {
+      const index = this.products.findIndex( i => i.id === id)
+      if (index === -1) throw new Error("product not found")
+      let product = this.products[index]
+      this.products[index] = {
+        ...product,
+        ...data
+      }
 
+      setTimeout(() => {
+        res(this.products[index])
+      },5000)
+    })
   }
 
-  create() {
+  async deleteOne(id) {
+    return new Promise((res,rej) => {
+      const index = this.products.findIndex(i => i.id == id)
+      if (index === -1) throw new Error("product not found")
+      this.products.splice(index,1)
 
+      setTimeout(() => {
+        res({ id })
+      },5000)
+    })
   }
 }
 

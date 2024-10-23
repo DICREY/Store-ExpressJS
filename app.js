@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
 const serverRouters = require('./server/index')
+const { logErrors,errorHandler } = require('./middleware/error.handler')
 
 const app = express()
 const port = 3000
@@ -22,6 +23,8 @@ app.get('/newRouts',(req,res) => {
 })
 
 serverRouters(app)
+app.use(logErrors)
+app.use(errorHandler)
 
 app.listen(port,() => {
   console.log("MY port is: " + port)

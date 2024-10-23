@@ -4,46 +4,46 @@ const UserService = require('../services/users.services')
 const router = express.Router()
 const user = new UserService()
 
-router.get('/',(req,res) => {
-  const service = user.find()
+router.get('/',async (req,res) => {
+  const service = await user.find()
   res.status(200).json(service)
 })
 
-router.get('/:data',(req,res) => {
+router.get('/:data',async (req,res) => {
   const { data } = req.params
-  const service = user.findOne(data)
+  const service = await user.findOne(data)
   res.status(200).json(service)
 })
 
-router.post('/',(req,res) => {
+router.post('/',async (req,res) => {
   const data = req.body
-  const service = user.create(data)
+  const service = await user.create(data)
   res.status(201).json(service)
 })
 
-router.patch('/:data',(req,res) => {
-  const { data } = req.params
-  const body = req.body
-  const service = user.update(data,body)
-  res.status(214).json(service)
+router.patch('/:id',async (req,res) => {
+  try {
+    const { id } = req.params
+    const body = req.body
+    const service = await user.update(id,body)
+    res.status(214).json(service)
+  } catch(error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 })
 
-router.delete('/:id',(req,res) => {
-  const { id } = req.params
-  const product = service.delete(id)
-  res.status().json(product)
+router.delete('/:id',async (req,res) => {
+  try {
+    const { id } = req.params
+    const product = await service.delete(id)
+    res.status().json(product)
+  } catch(error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 })
-
-// router.get('/',(req,res) => {
-//   const { limit, offset} = req.query
-//   if (limit && offset) {
-//     res.json({
-//       limit,
-//       offset
-//     })
-//   } else {
-//     res.send("no hay parametros")
-//   }
-// })
 
 module.exports = router
