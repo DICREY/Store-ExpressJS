@@ -1,7 +1,15 @@
+//Errors middlewares 
 function logErrors(error,req,res,next) {
   console.log('logErrors')
   console.error(error)
   next(error)
+}
+
+function boomErrorHandler(err,req,res,next) {
+  if (err.isBoom) {
+    const { output } = err
+    res.status(output.statusCode).json(output.payload)
+  } else next(err)
 }
 
 function errorHandler(err,re,res,next) {
@@ -12,4 +20,4 @@ function errorHandler(err,re,res,next) {
   })
 }
 
-module.exports = { logErrors,errorHandler }
+module.exports = { logErrors,errorHandler,boomErrorHandler }

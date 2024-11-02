@@ -1,4 +1,6 @@
-const { faker, da } = require('@faker-js/faker')
+// librarys 
+const { faker } = require('@faker-js/faker')
+const boom = require('@hapi/boom')
 
 class ProductsService {
   constructor () {
@@ -13,7 +15,8 @@ class ProductsService {
         id: faker.string.uuid(),
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(),20),
-        image: faker.image.url()
+        image: faker.image.url(),
+        isBlock: Boolean(faker.datatype.boolean())
       })
     }
   }
@@ -27,10 +30,12 @@ class ProductsService {
   }
 
   async findOne(data) {
-    const name = this.getTotal()
+    const index = this.products.findIndex( i => i.id === data || i.name === data)
+    if (index === -1) throw boom.notFound("Product not found, verify your datas")
+    if (this.products[index].isBlock === true) throw boom.conflict("Product locked")
     return new Promise((res,rej) => {
       setTimeout(() => {
-        res(this.products.find( i => i.id === data || i.name === data))
+        res(this.products[index])
       },5000)
     })
   }
@@ -39,7 +44,8 @@ class ProductsService {
     return new Promise((res,rej) => {
       const newProduct = {
         id: faker.string.uuid(),
-        ...data
+        ...data,
+        isBlock: false
       }
       this.products.push(newProduct)
       setTimeout(() => {
@@ -54,7 +60,7 @@ class ProductsService {
   async update(id,data) {
     return new Promise((res,rej) => {
       const index = this.products.findIndex( i => i.id === id)
-      if (index === -1) throw new Error("product not found")
+      if (index === -1) throw boom.notFound("Product not found")
       let product = this.products[index]
       this.products[index] = {
         ...product,
@@ -70,7 +76,7 @@ class ProductsService {
   async deleteOne(id) {
     return new Promise((res,rej) => {
       const index = this.products.findIndex(i => i.id == id)
-      if (index === -1) throw new Error("product not found")
+      if (index === -1) throw boom.notFound("Product not found")
       this.products.splice(index,1)
 
       setTimeout(() => {

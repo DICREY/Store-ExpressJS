@@ -5,3 +5,4 @@ npm i express
 npm i path
 npm i @faker-js/faker
 npm i @hapi/boom
+npm i joi
