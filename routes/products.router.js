@@ -6,9 +6,11 @@ const ProductsService = require('../services/products.services')
 const { validatorHandler } = require('../middleware/validator.handler')
 const { createProductSchema,updateProductSchema,getProductSchema } = require('../schemas/product.schema')
 
+// functions express 
 const router = express.Router()
 const service = new ProductsService()
 
+// Routers 
 router.get('/',async (req,res) => {
   const products = await service.find()
   res.json(products)

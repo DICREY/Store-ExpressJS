@@ -1,9 +1,12 @@
+// Librarys 
 const express = require('express')
 
+// import Scripts 
 const productsRouter = require('../routes/products.router')
 const usersRouter = require('../routes/users.router')
 const categoriesRouter = require('../routes/categories.router')
 
+// Etablish routers 
 function routerApi(app) {
   const router = express.Router()
   app.use('/api/v1',router)
@@ -12,4 +15,4 @@ function routerApi(app) {
   router.use('/categories',categoriesRouter)
 }
 
-module.exports = routerApi
+module.exports = { routerApi }

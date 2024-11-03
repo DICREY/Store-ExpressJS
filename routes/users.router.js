@@ -1,9 +1,12 @@
+// Librarys 
 const express = require('express')
 const UserService = require('../services/users.services')
 
+// Library method
 const router = express.Router()
 const user = new UserService()
 
+// Routers 
 router.get('/',async (req,res) => {
   const service = await user.find()
   res.status(200).json(service)

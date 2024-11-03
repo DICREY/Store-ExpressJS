@@ -21,6 +21,7 @@ class ProductsService {
     }
   }
 
+  // methods
   async find() {
     return new Promise((res,rej) => {
       setTimeout(() => {
