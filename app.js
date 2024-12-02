@@ -4,12 +4,15 @@ const path = require('path')
 const { faker } = require('@faker-js/faker')
 
 // import Scripts 
-const serverRouters = require('./server/index')
+const { routerApi } = require('./server/index')
 const { logErrors,errorHandler,boomErrorHandler } = require('./middleware/error.handler')
 
 // vars 
 const app = express()
-const port = 3000
+const port = 4000
+
+// desactivar header extra 
+app.disable('x-powered-by')
 
 // Esto le dice a Express que sirva archivos estáticos desde el directorio public
 app.use(express.static('public'));
@@ -23,7 +26,7 @@ app.get('/',(request,response) => {
 })
 
 // use routers 
-serverRouters(app)
+routerApi(app)
 
 // middleware 
 app.use(logErrors)
